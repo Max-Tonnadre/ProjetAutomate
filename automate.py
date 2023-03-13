@@ -46,4 +46,14 @@ def displayTableAutomate():
         print("")   
     f.close()
 
-displayTableAutomate()
+def isAutomatefull() :
+    f=open("automate.txt","r")
+    lines=f.readlines()
+    for line in lines:
+        if (line.find("-")!=-1):
+            return False
+    return True
+
+
+
+print(isAutomatefull())
