@@ -20,18 +20,30 @@ def AddAutomate():
 
 
 def displayTableAutomate():
+    transition=[]
     f=open("automate.txt","r")
     lines=f.readlines()
+    checkTransitions=lines[0].split(":")[1].split("(")
+    for e in checkTransitions:
+        if(e!=""):
+            transition+=e[0]
+    print("    ",end="")
+    for transi in transition:
+        print("|"+transi+"|",end="")
+    print("")
     for line in lines:
         print("---------------------")
         if(line[0]=="1"):
-            print("E |"+line[2])
+            print("E |"+line[2]+"|",end="")
         if(line[0]=="2"):
-            print("F |"+line[2])
+            print("F |"+line[2]+"|",end="")
         if(line[0]=="3"):
-            print("EF|"+line[2])
+            print("EF|"+line[2]+"|",end="")
         if(line[0]=="  |4"):
-            print(line[2])
+            print(line[2],end="")
+        for e in transition :
+            print(line[line.find(e)+2]+"|",end="")
+        print("")   
     f.close()
 
 displayTableAutomate()
