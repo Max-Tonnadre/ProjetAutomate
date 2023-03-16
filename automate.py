@@ -1,5 +1,49 @@
 from boiteOutilsRomain import colortext
 from os import system
+
+def convertAutomateToDict():
+    """
+    Cette fonction transforme le doc txt en format dict python
+    la syntaxe est la suivante :
+    dict = {"A":[1,['a','2'],['b','3','2'],['c','-1']],
+            "B":[4,['a','2'],['b','3','2'],['c','-1']]} 
+    le tout premier element de la liste dit si c une E/S/ES/rien
+    """
+    dico = {}
+    f=open("automate.txt","r")
+    lines=f.readlines()
+    f.close()
+    #recuperation des transitions ['a','b',...]
+    transition=[]
+    checkTransitions=lines[0].split(":")[1].split("(") 
+    for e in checkTransitions: # hop recyclage
+        if(e!=""):
+            transition+=e[0]
+    for line in lines :
+        print(line)
+        listeCle = [] # liste cle est la liste de la valeur du dico et la sous liste est la liste des transition et des etats d'arrivé dans l'ex c'est [a,2]
+        listeCle.append(int(line[0])) # ajout de l'info E/S/ES
+        for i in range (len(transition)):
+            sousliste = []
+            if line[line.find(transition[i])+3] != ')' :  # cas ou il y a plusieurs etat d'arrivée 
+                ligneRaccouci = line[line.find(transition[i]):] # si il y a plrs etat d'arrive alors je raccourci la ligne pour que ce soit plus simple ex : b,2,3)(c,-)(d,-)
+                print("plrs etats d'arrivé",ligneRaccouci)
+                for j in range(ligneRaccouci.find(')')): # enfin dans cette ligne raccourcie les etats sont en position 2,4,6,... et je vais jusquau prochain ')'(qui est le premier de la ligne raccouci)
+                    if j%2 == 0 :
+                        sousliste.append(ligneRaccouci[j]) # a noter que a l'index zero on prend le 'b' de l'exemple du dessus
+            else : # cas ou il y a que 1 etat d'arrivé ou aucun (-1)
+                sousliste.append(transition[i])
+                sousliste.append(line[line.find(transition[i])+2] if line[line.find(transition[i])+2] != '-' else "-1"  )
+            print("sous liste = ",sousliste)
+            listeCle.append(sousliste)
+        dico[line[2]] =listeCle
+    print(dico)
+    return dico
+
+def afficherDicoPropre(dico):
+    for ele in dico:
+        print(ele,'\t',dico[ele])
+
 def AddAutomate():
     f=open("automate.txt","w")
     Etats=input("Entrer les differents Etats de l'automate :").split(",")
@@ -15,7 +59,6 @@ def AddAutomate():
             f.write(')')
         f.write("\n")
     f.close()
-
 
 def displayTableAutomate():
     transition=[]
@@ -63,7 +106,9 @@ def HowManyEntry():
             compteur+=1
     return compteur
 
-
+def isDeterminist():
+    pass
 
 if __name__ == "__main__":
-    displayTableAutomate()
+    system("cls")
+    help(convertAutomateToDict)

@@ -1,2 +1,1 @@
-import automate
-automate.displayAutomateV2()
+print(0%2 == 0 )
