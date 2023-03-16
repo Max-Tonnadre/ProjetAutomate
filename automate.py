@@ -1,6 +1,6 @@
 def AddAutomate():
     f=open("automate.txt","w")
-    Etats=input("Entrer les diffrents Etats de l'automate :").split(",")
+    Etats=input("Entrer les differents Etats de l'automate :").split(",")
     transitions=input("Entrer les diffentes transitions de l'alphabet :").split(",")
     for etat in Etats:
         entresortie=input("Si Etat "+etat+" initial,entrer 1,si Etat final,entrer 2,si Etat initial et final,entrer 3,si Etat normal,entrer 4 :")
@@ -15,10 +15,6 @@ def AddAutomate():
     f.close()
 
 
-
-
-
-
 def displayTableAutomate():
     transition=[]
     f=open("automate.txt","r")
@@ -28,8 +24,9 @@ def displayTableAutomate():
         if(e!=""):
             transition+=e[0]
     print("    ",end="")
+    print("|",end="")
     for transi in transition:
-        print("|"+transi+"|",end="")
+        print(transi+"|",end="")
     print("")
     for line in lines:
         print("---------------------")
@@ -54,6 +51,14 @@ def isAutomatefull() :
             return False
     return True
 
+def HowManyEntry():
+    compteur=0
+    f=open("automate.txt","r")
+    lines=f.readlines()
+    for line in lines:
+        if(line[0]=="1" or line[0]=="3"):
+            compteur+=1
+    return compteur
 
 
-print(isAutomatefull())
+
