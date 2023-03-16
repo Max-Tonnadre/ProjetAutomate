@@ -1,3 +1,5 @@
+from boiteOutilsRomain import colortext
+from os import system
 def AddAutomate():
     f=open("automate.txt","w")
     Etats=input("Entrer les differents Etats de l'automate :").split(",")
@@ -23,23 +25,23 @@ def displayTableAutomate():
     for e in checkTransitions:
         if(e!=""):
             transition+=e[0]
-    print("    ",end="")
-    print("|",end="")
+    print(transition)
+    print(colortext('E',"blue")+'\t',end='')
     for transi in transition:
-        print(transi+"|",end="")
-    print("")
+        print("|\t"+colortext(transi,"red")+"\t",end="")
+    print("|")
     for line in lines:
-        print("---------------------")
+        print("-"*len(transition)*18)
         if(line[0]=="1"):
-            print("E |"+line[2]+"|",end="")
+            print(colortext("E ","green") +"|"+line[2]+"\t|\t",end="")
         if(line[0]=="2"):
-            print("F |"+line[2]+"|",end="")
+            print(colortext("S ","lightred") +"|"+line[2]+"\t|\t",end="")
         if(line[0]=="3"):
-            print("EF|"+line[2]+"|",end="")
-        if(line[0]=="  |4"):
+            print("ES|"+line[2]+"\t|\t",end="")
+        if(line[0]=="  \t|\t4"):
             print(line[2],end="")
         for e in transition :
-            print(line[line.find(e)+2]+"|",end="")
+            print(line[line.find(e)+2]+"\t|\t",end="")
         print("")   
     f.close()
 
@@ -63,3 +65,5 @@ def HowManyEntry():
 
 
 
+if __name__ == "__main__":
+    displayTableAutomate()
