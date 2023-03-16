@@ -55,6 +55,7 @@ def HowManyEntry():
     compteur=0
     f=open("automate.txt","r")
     lines=f.readlines()
+    f.close()
     for line in lines:
         if(line[0]=="1" or line[0]=="3"):
             compteur+=1
