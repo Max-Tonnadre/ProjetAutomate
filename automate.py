@@ -107,8 +107,62 @@ def HowManyEntry():
     return compteur
 
 def isDeterminist():
-    pass
+    if(HowManyEntry()>1):
+        return False
+    if(AreTransitionWithMoreThanOneState()):
+        return False
+    return True
+
+def isStandard():
+    if(HowManyEntry()>1):
+        return False
+    if(AreTransitionToEntry()):
+        return False
+    return True
+
+def Determinisation():
+    if(isDeterminist()):
+        print("L'automate est déjà déterministe")
+        return
+    
+    
+
+def WhatAreEntry():
+    entry=[]
+    f=open("automate.txt","r")
+    lines=f.readlines()
+    f.close()
+    for line in lines:
+        if(line[0]=="1" or line[0]=="3"):
+            entry.append(line[2])
+    return entry
+            
+def AreTransitionToEntry():
+    entry=WhatAreEntry()
+    f=open("automate.txt","r")
+    lines=f.readlines()
+    f.close()
+    for line in lines:
+        line=line.split(":")[1]
+        for e in entry:
+            if(line.find(e)!=-1):
+                return True
+    return False
+
+def AreTransitionWithMoreThanOneState():
+    f=open("automate.txt","r")
+    lines=f.readlines()
+    f.close()
+    for line in lines:
+        line=line.split(":")[1]
+        line=line.split("(")
+        for e in line:
+            if(e.count(",")>1):
+                return True
+    return False
+
+
+
 
 if __name__ == "__main__":
-    system("cls")
-    help(convertAutomateToDict)
+   print(AreTransitionWithMoreThanOneState())
