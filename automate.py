@@ -124,7 +124,12 @@ def Determinisation():
     if(isDeterminist()):
         print("L'automate est déjà déterministe")
         return
-    
+
+def Standardisation():
+    if(isStandard()):
+        print("L'automate est déjà standard")
+        return
+        
     
 
 def WhatAreEntry():
