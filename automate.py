@@ -134,16 +134,31 @@ def Standardisation():
     listeDesValeursDesEtatsEntree = [] #isoler les cles qui nous interesse
     
     for etat in listeDesEntrees:
-        listeDesValeursDesEtatsEntree.append(automateDico[etat])
+        listeDesValeursDesEtatsEntree.append(automateDico[etat]) # on recup que les values des E et E/S de dico
     print('--')
-    for listeDesTransition in listeDesValeursDesEtatsEntree:
+    for listeDesTransition in listeDesValeursDesEtatsEntree: # pour chaque [['a', '-1'], ['b', '-1'], ['c', '-1'], ['d', '-1']] dans la liste
+        listeDesTransition = listeDesTransition[1:]
         print(listeDesTransition)
-        for i in range(1,len(listeDesTransition)):
-            print(listeDesTransition[i])
-            print("etat i :",Etat_i)
-            if listeDesTransition[i][1:] != '-1':
-                pass
+        for i in range(len(listeDesTransition)):
+            print("listes des transitions ",listeDesTransition[i])
+            print("etat i :",Etat_i["I"])
+            if listeDesTransition[i][1:][0] != '-1': # si ça mene nul part pas besoin de copier
+                print("pasVide")
+                if Etat_i["I"][i][1] == '-1':
+                    print("i est vide")
+                    Etat_i["I"][i].remove("-1")
+            
+                for ele in listeDesTransition[i][1:] :
+                    if ele not in Etat_i["I"][i] :
+                        Etat_i["I"][i].append(ele)
+                    print("ele =",ele)
 
+                    
+                
+
+
+            print("apres if ",Etat_i["I"])
+    print("final ",Etat_i)
             
             
             
