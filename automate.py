@@ -20,24 +20,20 @@ def convertAutomateToDict():
         if(e!=""):
             transition+=e[0]
     for line in lines :
-        print(line)
         listeCle = [] # liste cle est la liste de la valeur du dico et la sous liste est la liste des transition et des etats d'arrivé dans l'ex c'est [a,2]
         listeCle.append(int(line[0])) # ajout de l'info E/S/ES
         for i in range (len(transition)):
             sousliste = []
             if line[line.find(transition[i])+3] != ')' :  # cas ou il y a plusieurs etat d'arrivée 
                 ligneRaccouci = line[line.find(transition[i]):] # si il y a plrs etat d'arrive alors je raccourci la ligne pour que ce soit plus simple ex : b,2,3)(c,-)(d,-)
-                print("plrs etats d'arrivé",ligneRaccouci)
                 for j in range(ligneRaccouci.find(')')): # enfin dans cette ligne raccourcie les etats sont en position 2,4,6,... et je vais jusquau prochain ')'(qui est le premier de la ligne raccouci)
                     if j%2 == 0 :
                         sousliste.append(ligneRaccouci[j]) # a noter que a l'index zero on prend le 'b' de l'exemple du dessus
             else : # cas ou il y a que 1 etat d'arrivé ou aucun (-1)
                 sousliste.append(transition[i])
                 sousliste.append(line[line.find(transition[i])+2] if line[line.find(transition[i])+2] != '-' else "-1"  )
-            print("sous liste = ",sousliste)
             listeCle.append(sousliste)
         dico[line[2]] =listeCle
-    print(dico)
     return dico
 
 def afficherDicoPropre(dico):
@@ -128,9 +124,30 @@ def Determinisation():
 def Standardisation():
     if(isStandard()):
         print("L'automate est déjà standard")
-        return
-        
+        return 
+    automateDico = convertAutomateToDict()
+    listeDesEntrees = WhatAreEntry()
+    Etat_i = {"I":[[ele,'-1'] for ele in WhatAreTransitions() ]}
+    #Etat_i["I"].insert(0,1)
+    print(Etat_i)
+    afficherDicoPropre(automateDico)
+    listeDesValeursDesEtatsEntree = [] #isoler les cles qui nous interesse
     
+    for etat in listeDesEntrees:
+        listeDesValeursDesEtatsEntree.append(automateDico[etat])
+    print('--')
+    for listeDesTransition in listeDesValeursDesEtatsEntree:
+        print(listeDesTransition)
+        for i in range(1,len(listeDesTransition)):
+            print(listeDesTransition[i])
+            print("etat i :",Etat_i)
+            if listeDesTransition[i][1:] != '-1':
+                pass
+
+            
+            
+            
+
 
 def WhatAreEntry():
     entry=[]
@@ -141,7 +158,28 @@ def WhatAreEntry():
         if(line[0]=="1" or line[0]=="3"):
             entry.append(line[2])
     return entry
-            
+
+def WhatAreEtat():
+    etat = []
+    f=open("automate.txt","r")
+    lines=f.readlines()
+    f.close()
+    for line in lines:
+        etat.append(line[2])
+    return etat        
+
+def WhatAreTransitions():
+    f=open("automate.txt","r")
+    lines=f.readlines()
+    f.close()
+    #recuperation des transitions ['a','b',...]
+    transition=[]
+    checkTransitions=lines[0].split(":")[1].split("(") 
+    for e in checkTransitions: # hop recyclage
+        if(e!=""):
+            transition+=e[0]
+    return transition
+
 def AreTransitionToEntry():
     entry=WhatAreEntry()
     f=open("automate.txt","r")
@@ -170,4 +208,6 @@ def AreTransitionWithMoreThanOneState():
 
 
 if __name__ == "__main__":
-   print(AreTransitionWithMoreThanOneState())
+    system("cls")
+    Standardisation()
+   
