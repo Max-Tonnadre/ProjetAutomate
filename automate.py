@@ -80,7 +80,14 @@ def displayTableAutomate():
         if(line[0]=="  \t|\t4"):
             print(line[2],end="")
         for e in transition :
-            print(line[line.find(e)+2]+"\t|\t",end="")
+            temp=line.split(e)[1]
+            if (temp[2]==")"):
+                print(temp[1]+"\t|\t",end="")
+            else:
+                while(temp[2]!=")"):
+                    print(temp[1],end="")
+                    temp=temp[2:]
+                print(temp[1]+"\t|\t",end="")
         print("")   
     f.close()
 
@@ -224,5 +231,5 @@ def AreTransitionWithMoreThanOneState():
 
 if __name__ == "__main__":
     system("cls")
-    Standardisation()
+    displayTableAutomate()
    
