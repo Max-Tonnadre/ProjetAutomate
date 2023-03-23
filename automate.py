@@ -159,16 +159,30 @@ def Standardisation():
                     if ele not in Etat_i["I"][i] :
                         Etat_i["I"][i].append(ele)
                     print("ele =",ele)
-
-                    
-                
-
-
             print("apres if ",Etat_i["I"])
+    
+    if hasES():
+        Etat_i["I"].insert(0,3)
+    else :
+        Etat_i["I"].insert(0,1)
+
+    #Suppresion des entrées 
+    # 3 -> 2 et 1 -> 4
+    for ele in listeDesEntrees :
+        automateDico[ele][0] = 2 if automateDico[ele][0]  == 3 else 4
+        #if automateDico[ele][0] == '3':
+        automateDico["I"] = Etat_i["I"]
+
     print("final ",Etat_i)
-            
-            
-            
+    afficherDicoPropre(automateDico)
+def hasES():
+    f=open("automate.txt","r")
+    lines=f.readlines()
+    f.close()
+    for line in lines:
+        if(line[0]=="3"):
+            return True
+    return False
 
 
 def WhatAreEntry():
@@ -230,6 +244,4 @@ def AreTransitionWithMoreThanOneState():
 
 
 if __name__ == "__main__":
-    system("cls")
-    displayTableAutomate()
-   
+    Standardisation()
