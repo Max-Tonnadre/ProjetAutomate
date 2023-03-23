@@ -169,6 +169,36 @@ def Standardisation():
             
             
             
+def Determinisation():
+    if(isDeterminist()):
+        print("L'automate est déjà déterministe")
+        return
+    automateDico = convertAutomateToDict()
+    listeDesEntrees = WhatAreEntry()
+
+
+
+def CompleteAutomate(): 
+    if(isAutomatefull()):
+        print("L'automate est déjà complet")
+        return
+    transitions=WhatAreTransitions()
+    f=open("automate.txt","r")
+    newline=[]
+    lines=f.readlines()
+    for line in lines:
+        line=line.replace("-","P")
+        newline.append(line)       
+    f.close()
+    f=open("automate.txt","w")
+    for e in newline :     
+        f.write(e)
+    f.write("\n4*P:")
+    for y in transitions:
+        f.write("("+y+",P)")
+    f.close()
+
+
 
 
 def WhatAreEntry():
@@ -231,5 +261,7 @@ def AreTransitionWithMoreThanOneState():
 
 if __name__ == "__main__":
     system("cls")
-    displayTableAutomate()
+    print(WhatAreTransitions())
+    print("/////////////")
+    CompleteAutomate()
    
