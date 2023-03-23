@@ -6,3 +6,8 @@ le premier chiffre ->
 2 = sortie 
 3 = entre/sortie
 4 = rien 
+
+1*1:(a,-)(b,2,1)(c,-)(d,-)
+2*2:(a,2)(b,2)(c,-)(d,-)
+3*3:(a,3)(b,2)(c,-)(d,-)
+1*4:(a,4)(b,2)(c,-)(d,-)

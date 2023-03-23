@@ -57,6 +57,7 @@ def AddAutomate():
     f.close()
 
 def displayTableAutomate():
+    system("cls")
     transition=[]
     f=open("automate.txt","r")
     lines=f.readlines()
@@ -64,7 +65,6 @@ def displayTableAutomate():
     for e in checkTransitions:
         if(e!=""):
             transition+=e[0]
-    print(transition)
     print(colortext('E',"blue")+'\t',end='')
     for transi in transition:
         print("|\t"+colortext(transi,"red")+"\t",end="")
@@ -135,7 +135,6 @@ def Standardisation():
     automateDico = convertAutomateToDict()
     listeDesEntrees = WhatAreEntry()
     Etat_i = {"I":[[ele,'-1'] for ele in WhatAreTransitions() ]}
-    #Etat_i["I"].insert(0,1)
     print(Etat_i)
     afficherDicoPropre(automateDico)
     listeDesValeursDesEtatsEntree = [] #isoler les cles qui nous interesse
@@ -175,6 +174,7 @@ def Standardisation():
 
     print("final ",Etat_i)
     afficherDicoPropre(automateDico)
+
 def hasES():
     f=open("automate.txt","r")
     lines=f.readlines()
@@ -183,7 +183,6 @@ def hasES():
         if(line[0]=="3"):
             return True
     return False
-
 
 def WhatAreEntry():
     entry=[]
@@ -240,8 +239,33 @@ def AreTransitionWithMoreThanOneState():
                 return True
     return False
 
+def dicoToTxt(dico):
+    """
+    dict = {"A":[1,['a','2'],['b','3','2'],['c','-1']],
+            "B":[4,['a','2'],['b','3','2'],['c','-1']]} 
+    en ça :
+    1*0:(a,2)(b,0)
+    1*1:(a,3)(b,-)
+    2*2:(a,0)(b,1)
+    2*3:(a,-)(b,2)
+
+    """
+    transitions = WhatAreTransitions()
+    keys = list(dico.keys())
+    values = list(dico.values())
+    print(transitions)
+    print(keys)
+    print(values)
+    ligne = ""
+    for i in range(len(values)):
+        ligne += str(values[i][0]) + '*' + keys[i]+':()'+transitions[i]+','
+
+    print(keys,'\n',values)
+
+      
+    
 
 
 
 if __name__ == "__main__":
-    Standardisation()
+    dicoToTxt(convertAutomateToDict())
