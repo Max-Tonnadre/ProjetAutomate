@@ -123,10 +123,7 @@ def isStandard():
         return False
     return True
 
-def Determinisation():
-    if(isDeterminist()):
-        print("L'automate est déjà déterministe")
-        return
+
 
 def Standardisation():
     if(isStandard()):
@@ -167,15 +164,105 @@ def Standardisation():
             print("apres if ",Etat_i["I"])
     print("final ",Etat_i)
             
+def getTransitionOfOneState(state):
+    f=open("automate.txt","r")
+    lines=f.readlines()
+    f.close()
+    newlines=[]
+    if ("/"not in state) :
+        for w in state:
+            for line in lines:
+                if line[0] == state:
+                    newlines=line.split(":")[1].split("(")[1:]
+                    return [e.replace(")","").replace("\n","") for e in newlines]
+    else:
+        states=state.split("/")
+        transition=""
+        for state in states:
+             for line in lines:
+                if line[0] == state:
+                    newlines=line.split(":")[1].split("(")[1:]
+                    tempTransition=[e.replace(")","").replace("\n","") for e in newlines]
+        
+    return None
+
+def addTwoStateTransition(transitions1,transitions2):
+    newTransitions=[]
+    for t1 in transitions1:
+        temp=""
+        alreadypresent=[]
+        temp+=t1[0]
+        for e in t1[2:]:
+            print("e : ",e)
+            temp+=e
+            alreadypresent.append(e)
+        for t2 in transitions2:
+            for e2 in t2:
+                if (e2 not in alreadypresent):
+                    temp+=e2
+        if (len(temp)>2 and "-" in temp):
+            temp.remove("-")
+        newTransitions.append(temp)
+    return newTransitions
             
+
+        
+
+
+
+   
             
-def Determinisation():
+def Determinisation(nomFichier):
     if(isDeterminist()):
         print("L'automate est déjà déterministe")
         return
     automateDico = convertAutomateToDict()
     listeDesEntrees = WhatAreEntry()
+    transition=WhatAreTransitions()
+    EtatsDone=[]
+    EtatsToDo=[]
+    newEtat=[] 
+    fichier=open(nomFichier,"r")
+    lines=fichier.readlines()
+    fichier.close()
+    Etat1=lines[0][0]
+    transitionEtat1=getTransitionOfOneState(Etat1)
+    for i in range(len(transitionEtat1)):
+        if(len(transitionEtat1[i])>3):
+            transitionEtat1[i]=CreateNewTransitionForDeter(transitionEtat1[i])
+    print(transitionEtat1)
+    EtatsDone+=Etat1
+    for e in transitionEtat1:
+        if(e[2] not in EtatsDone):
+            EtatsToDo.append(e[2])
+    while(len(EtatsToDo)>0):
+        Etat=EtatsToDo[0]
+        EtatsDone.append(Etat)
+        EtatsToDo.remove(Etat)
+        transitionEtat=getTransitionOfOneState(Etat)#Marche pas si deux Etats Fusionnés WIP
+        for i in range(len(transitionEtat)):
+            if(len(transitionEtat[i])>3):
+                transitionEtat[i]=CreateNewTransitionForDeter(transitionEtat[i])
+        for e in transitionEtat:
+            if(e[2] not in EtatsDone):
+                EtatsToDo.append(e[2])
+        return #Temporaire WIP
 
+            
+    
+     
+def CreateNewTransitionForDeter(transition):
+    newTransition=""
+    elements=transition.split(",")
+    newTransition+=elements[0]+","
+    for e in elements[1:]:
+        if (len(newTransition)<3):
+            newTransition+=e
+        else :
+            newTransition+="/"+e
+    return newTransition
+
+    
 
 
 def CompleteAutomate(): 
@@ -261,7 +348,10 @@ def AreTransitionWithMoreThanOneState():
 
 if __name__ == "__main__":
     system("cls")
-    print(WhatAreTransitions())
-    print("/////////////")
-    CompleteAutomate()
+    print("Transition de 2",getTransitionOfOneState("2"))
+    print("Transition de 3",getTransitionOfOneState("3"))
+    print(addTwoStateTransition(getTransitionOfOneState("3"),getTransitionOfOneState("2")))
+    #print(Determinisation("automate.txt"))
+
+  
    
