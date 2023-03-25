@@ -188,21 +188,20 @@ def getTransitionOfOneState(state):
 
 def addTwoStateTransition(transitions1,transitions2):
     newTransitions=[]
-    for t1 in transitions1:
-        temp=""
-        alreadypresent=[]
-        temp+=t1[0]
-        for e in t1[2:]:
-            print("e : ",e)
-            temp+=e
-            alreadypresent.append(e)
-        for t2 in transitions2:
-            for e2 in t2:
-                if (e2 not in alreadypresent):
-                    temp+=e2
-        if (len(temp)>2 and "-" in temp):
-            temp.remove("-")
-        newTransitions.append(temp)
+    tempTransi1=""
+    tempTransi2=""
+    temp=[] #Recupere les transitions qui sont dans les deux etats avant de les stringify
+    for i in range (len(transitions1)):
+        if (transitions1[i]==transitions2[i]):
+            newTransitions.append(transitions1[i])
+        else:
+            tempTransi1=transitions1[i].split(",")
+            temp=tempTransi1
+            tempTransi2=transitions2[i].split(",")
+            for e in tempTransi2:
+                if e not in temp:
+                    temp.append(e)
+            newTransitions.append(",".join(temp))
     return newTransitions
             
 
