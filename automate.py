@@ -275,18 +275,68 @@ def Determinisation(nomFichier):
     return
 
 def convertnewEtatToTxt(newEtat,fichiertxt):
-    print(newEtat)
+    print("NEW ETAT",newEtat)
+    fonctions=[]
+    for i in range (len(newEtat)):
+        if(i%2==0):
+            fonctions.append(getFonctionOfAState(fichiertxt,newEtat[i]))
+    print(fonctions)
     f=open(fichiertxt,"w")
     for i in range(len(newEtat)):
         if(i%2==0):
-            #mettre Si Etat est Sortie Entre ou EntreSortie ou rien
-            
-            f.write(newEtat[i]+":")
+            if("/" not in newEtat[i]):
+                print("index",i,fonctions) #fonctions[i] ressort un trois au lieu d'un 2
+                if (i!=0):
+                    f.write(fonctions[int(i/2)]+"*")
+                else:
+                    f.write(fonctions[i]+"*")
+                if(type(newEtat[i])==list):
+                    f.write(newEtat[i][0]+":")
+                else:
+                    f.write(newEtat[i]+":")
         else:
             for e in newEtat[i]:
                 f.write("("+e+")")            
+            f.write("\n")
+    f.close()
+
+def getFonctionOfAState(fichier,e):
+    f=open(fichier,"r")
+    lines=f.readlines()
+    f.close()
+    if("/" in e[0]):
+        allfonction=[]
+        if(type(e)==list):
+            e=e[0].split("/")
+        else:
+            e=e.split("/")
+        for y in e :
+            allfonction.append(getFonctionOfAState(fichier,y))
+        print("ALL FONCTION",e,allfonction)
+        if ("3" in allfonction) :
+            return "3"
+        if ("2" and "4" in allfonction):
+            return "2"
+        if ("1" and "4" in allfonction):
+            return "1"
+        if("1" and "2" in allfonction):
+            return "3"
+        if("1" in allfonction):
+            return "1"
+        if("2" in allfonction):
+            return "2"
+        else :
+            return "4"
     
-     
+    for line in lines:
+        if(type(e)==list):
+            if line[2]==e[0]:
+                return str(line[0])
+        else: 
+            if line[2]==e:
+                return str(line[0])
+
+
 def CreateNewTransitionForDeter(transition):
     newTransition=""
     elements=transition.split(",")
