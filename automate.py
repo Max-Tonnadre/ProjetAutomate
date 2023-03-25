@@ -169,24 +169,31 @@ def getTransitionOfOneState(state):
     lines=f.readlines()
     f.close()
     newlines=[]
-    if ("/"not in state) :
+    if ("/"not in state[0]) :
         for w in state:
             for line in lines:
-                if line[0] == state:
+                if line[2] == state[0]:    
                     newlines=line.split(":")[1].split("(")[1:]
                     return [e.replace(")","").replace("\n","") for e in newlines]
     else:
-        states=state.split("/")
+        print("2/1?",state)
+        states=state[0].split("/")
         transition=""
         for state in states:
-             for line in lines:
-                if line[0] == state:
+            print(state)
+            for line in lines:
+                if line[2] == state[0]:
                     newlines=line.split(":")[1].split("(")[1:]
                     tempTransition=[e.replace(")","").replace("\n","") for e in newlines]
-        
-    return None
+            transition=addTwoStateTransition(transition,tempTransition)
+            print(transition)
+        return transition
 
 def addTwoStateTransition(transitions1,transitions2):
+    if(len(transitions1)==0):
+        return transitions2
+    if(len(transitions2)==0):
+        return transitions1
     newTransitions=[]
     tempTransi1=""
     tempTransi2=""
@@ -201,7 +208,11 @@ def addTwoStateTransition(transitions1,transitions2):
             for e in tempTransi2:
                 if e not in temp:
                     temp.append(e)
-            newTransitions.append(",".join(temp))
+            if (len(temp)>2 and "-" in temp):
+                for e in temp:
+                    if "-" in e:
+                        temp.remove(e)
+            newTransitions.append(",".join(temp)) #Veut pas join si "-"  dans la liste car devient null
     return newTransitions
             
 
@@ -215,9 +226,6 @@ def Determinisation(nomFichier):
     if(isDeterminist()):
         print("L'automate est déjà déterministe")
         return
-    automateDico = convertAutomateToDict()
-    listeDesEntrees = WhatAreEntry()
-    transition=WhatAreTransitions()
     EtatsDone=[]
     EtatsToDo=[]
     newEtat=[] 
@@ -230,24 +238,53 @@ def Determinisation(nomFichier):
         if(len(transitionEtat1[i])>3):
             transitionEtat1[i]=CreateNewTransitionForDeter(transitionEtat1[i])
     print(transitionEtat1)
+    newEtat+=Etat1,transitionEtat1
     EtatsDone+=Etat1
     for e in transitionEtat1:
-        if(e[2] not in EtatsDone):
-            EtatsToDo.append(e[2])
+        if(e.split(",")[1:] not in EtatsToDo):
+            EtatsToDo.append(e.split(",")[1:])
+            for e in EtatsToDo:
+                if("-" in e):
+                    if("/"not in e):
+                        EtatsToDo.remove(e)
+                    else :
+                        e=e.replace("-","").replace("/","")
+    print("EtatsToDo1",EtatsToDo)
+
     while(len(EtatsToDo)>0):
         Etat=EtatsToDo[0]
         EtatsDone.append(Etat)
         EtatsToDo.remove(Etat)
-        transitionEtat=getTransitionOfOneState(Etat)#Marche pas si deux Etats Fusionnés WIP
+        transitionEtat=getTransitionOfOneState(Etat)
+        print("HERE",Etat)
         for i in range(len(transitionEtat)):
             if(len(transitionEtat[i])>3):
                 transitionEtat[i]=CreateNewTransitionForDeter(transitionEtat[i])
+        newEtat+=Etat,transitionEtat
         for e in transitionEtat:
-            if(e[2] not in EtatsDone):
-                EtatsToDo.append(e[2])
-        return #Temporaire WIP
+            if(e.split(",")[1:] not in EtatsDone and e.split(",")[1:] not in EtatsToDo):
+                EtatsToDo.append(e.split(",")[1:])
+                for e in EtatsToDo:
+                    if("-" in e):
+                        if("/"not in e):
+                            EtatsToDo.remove(e)
+                        else :
+                            e=e.replace("-","").replace("/","")
+                print("EtatsToDo2",EtatsToDo)
+    convertnewEtatToTxt(newEtat,nomFichier)  
+    return
 
+def convertnewEtatToTxt(newEtat,fichiertxt):
+    print(newEtat)
+    f=open(fichiertxt,"w")
+    for i in range(len(newEtat)):
+        if(i%2==0):
+            #mettre Si Etat est Sortie Entre ou EntreSortie ou rien
             
+            f.write(newEtat[i]+":")
+        else:
+            for e in newEtat[i]:
+                f.write("("+e+")")            
     
      
 def CreateNewTransitionForDeter(transition):
@@ -347,9 +384,9 @@ def AreTransitionWithMoreThanOneState():
 
 if __name__ == "__main__":
     system("cls")
-    print("Transition de 2",getTransitionOfOneState("2"))
+    print("Transition de 21",getTransitionOfOneState("2/1"))
     print("Transition de 3",getTransitionOfOneState("3"))
-    print(addTwoStateTransition(getTransitionOfOneState("3"),getTransitionOfOneState("2")))
+    Determinisation("automate.txt")
     #print(Determinisation("automate.txt"))
 
   
