@@ -110,8 +110,6 @@ def HowManyEntry():
     return compteur
 
 def isDeterminist():
-    if(HowManyEntry()>1):
-        return False
     if(AreTransitionWithMoreThanOneState()):
         return False
     return True
@@ -235,7 +233,7 @@ def Determinisation(nomFichier):
     Etat1=lines[0][0]
     transitionEtat1=getTransitionOfOneState(Etat1)
     for i in range(len(transitionEtat1)):
-        if(len(transitionEtat1[i])>3):
+        if(len(transitionEtat1[i])>3 and "/" not in transitionEtat1[i]):
             transitionEtat1[i]=CreateNewTransitionForDeter(transitionEtat1[i])
     print(transitionEtat1)
     newEtat+=Etat1,transitionEtat1
@@ -250,7 +248,6 @@ def Determinisation(nomFichier):
                     else :
                         e=e.replace("-","").replace("/","")
     print("EtatsToDo1",EtatsToDo)
-
     while(len(EtatsToDo)>0):
         Etat=EtatsToDo[0]
         EtatsDone.append(Etat)
@@ -258,7 +255,7 @@ def Determinisation(nomFichier):
         transitionEtat=getTransitionOfOneState(Etat)
         print("HERE",Etat)
         for i in range(len(transitionEtat)):
-            if(len(transitionEtat[i])>3):
+            if(len(transitionEtat[i])>3 and "/" not in transitionEtat[i]):
                 transitionEtat[i]=CreateNewTransitionForDeter(transitionEtat[i])
         newEtat+=Etat,transitionEtat
         for e in transitionEtat:
