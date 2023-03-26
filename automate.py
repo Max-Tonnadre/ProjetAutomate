@@ -433,7 +433,7 @@ def AreTransitionWithMoreThanOneState(nomfichier):
 def fct(liste,fichier):
     f = open(fichier,'w')
     for ligne in liste:
-        f.write(ligne)
+        f.write(ligne.replace("-1","-"))
     f.close()
 
 def dicoToTxt(dico,nomfichier):
