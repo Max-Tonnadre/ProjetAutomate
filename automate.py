@@ -1,7 +1,7 @@
 from boiteOutilsRomain import colortext,affichageListe
 from os import system
 
-def convertAutomateToDict():
+def convertAutomateToDict(nomfichier):
     """
     Cette fonction transforme le doc txt en format dict python
     la syntaxe est la suivante :
@@ -10,7 +10,7 @@ def convertAutomateToDict():
     le tout premier element de la liste dit si c une E/S/ES/rien
     """
     dico = {}
-    f=open("automate.txt","r")
+    f=open(nomfichier,"r")
     lines=f.readlines()
     f.close()
     #recuperation des transitions ['a','b',...]
@@ -56,10 +56,9 @@ def AddAutomate():
         f.write("\n")
     f.close()
 
-def displayTableAutomate():
-    system("cls")
+def displayTableAutomate(nomfichier):
     transition=[]
-    f=open("automate.txt","r")
+    f=open(nomfichier,"r")
     lines=f.readlines()
     checkTransitions=lines[0].split(":")[1].split("(")
     for e in checkTransitions:
@@ -91,17 +90,17 @@ def displayTableAutomate():
         print("")   
     f.close()
 
-def isAutomatefull() :
-    f=open("automate.txt","r")
+def isAutomatefull(nomfichier) :
+    f=open(nomfichier,"r")
     lines=f.readlines()
     for line in lines:
         if (line.find("-")!=-1):
             return False
     return True
 
-def HowManyEntry():
+def HowManyEntry(nomfichier):
     compteur=0
-    f=open("automate.txt","r")
+    f=open(nomfichier,"r")
     lines=f.readlines()
     f.close()
     for line in lines:
@@ -109,8 +108,8 @@ def HowManyEntry():
             compteur+=1
     return compteur
 
-def isDeterminist():
-    if(AreTransitionWithMoreThanOneState() or HowManyEntry()>1):
+def isDeterminist(nomfichier):
+    if(AreTransitionWithMoreThanOneState(nomfichier) or HowManyEntry(nomfichier)>1):
         return False
     return True
 
@@ -153,8 +152,10 @@ def Standardisation():
         automateDico["I"] = Etat_i["I"]
     return automateDico              
 
-def getTransitionOfOneState(state):
-    f=open("automate.txt","r")
+
+            
+def getTransitionOfOneState(state,nomfichier):
+    f=open(nomfichier,"r")
     lines=f.readlines()
     f.close()
     newlines=[]
@@ -204,17 +205,18 @@ def addTwoStateTransition(transitions1,transitions2):
                         temp.remove(e)
             newTransitions.append(",".join(temp)) #Veut pas join si "-"  dans la liste car devient null
     return newTransitions
-                        
-def Determinisation(nomFichier):
-    if(isDeterminist()):
+            
+             
+def Determinisation(nomfichier):
+    if(isDeterminist(nomfichier)):
         print("L'automate est déjà déterministe")
         return
     EtatsDone=[]
     EtatsToDo=[]
     newEtat=[] 
     Etat1=""
-    Entry=WhatAreEntry()
-    fichier=open(nomFichier,"r")
+    Entry=WhatAreEntry(nomfichier)
+    fichier=open(nomfichier,"r")
     lines=fichier.readlines()
     fichier.close()
     for entry in Entry:
@@ -224,7 +226,7 @@ def Determinisation(nomFichier):
             if entry not in Etat1:
                 Etat1+="/"+entry
     print("Etat1",Etat1)
-    transitionEtat1=getTransitionOfOneState(Etat1)
+    transitionEtat1=getTransitionOfOneState(Etat1,nomfichier)
     for i in range(len(transitionEtat1)):
         if(len(transitionEtat1[i])>3 and "/" not in transitionEtat1[i]):
             transitionEtat1[i]=CreateNewTransitionForDeter(transitionEtat1[i])
@@ -245,7 +247,7 @@ def Determinisation(nomFichier):
         Etat=EtatsToDo[0]
         EtatsDone.append(Etat)
         EtatsToDo.remove(Etat)
-        transitionEtat=getTransitionOfOneState(Etat)
+        transitionEtat=getTransitionOfOneState(Etat,nomfichier)
         print("HERE",Etat)
         for i in range(len(transitionEtat)):
             if(len(transitionEtat[i])>3 and "/" not in transitionEtat[i]):
@@ -262,7 +264,7 @@ def Determinisation(nomFichier):
                             e=e.replace("-","").replace("/","")
                 print("EtatsToDo2",EtatsToDo)
     print("newEtat",newEtat)
-    convertnewEtatToTxt(newEtat,nomFichier)  
+    convertnewEtatToTxt(newEtat,nomfichier)  
     return
 
 def convertnewEtatToTxt(newEtat,fichiertxt):
@@ -342,12 +344,15 @@ def CreateNewTransitionForDeter(transition):
             newTransition+="/"+e
     return newTransition
 
-def CompleteAutomate(): 
+    
+
+
+def CompleteAutomate(nomfichier): 
     if(isAutomatefull()):
         print("L'automate est déjà complet")
         return
     transitions=WhatAreTransitions()
-    f=open("automate.txt","r")
+    f=open(nomfichier,"r")
     newline=[]
     lines=f.readlines()
     for line in lines:
@@ -371,9 +376,9 @@ def hasES():
             return True
     return False
 
-def WhatAreEntry():
+def WhatAreEntry(nomfichier):
     entry=[]
-    f=open("automate.txt","r")
+    f=open(nomfichier,"r")
     lines=f.readlines()
     f.close()
     for line in lines:
@@ -381,17 +386,17 @@ def WhatAreEntry():
             entry.append(line[2])
     return entry
 
-def WhatAreEtat():
+def WhatAreEtat(nomfichier):
     etat = []
-    f=open("automate.txt","r")
+    f=open(nomfichier,"r")
     lines=f.readlines()
     f.close()
     for line in lines:
         etat.append(line[2])
     return etat        
 
-def WhatAreTransitions():
-    f=open("automate.txt","r")
+def WhatAreTransitions(nomfichier):
+    f=open(nomfichier,"r")
     lines=f.readlines()
     f.close()
     #recuperation des transitions ['a','b',...]
@@ -402,9 +407,9 @@ def WhatAreTransitions():
             transition+=e[0]
     return transition
 
-def AreTransitionToEntry():
+def AreTransitionToEntry(nomfichier):
     entry=WhatAreEntry()
-    f=open("automate.txt","r")
+    f=open(nomfichier,"r")
     lines=f.readlines()
     f.close()
     for line in lines:
@@ -414,8 +419,8 @@ def AreTransitionToEntry():
                 return True
     return False
 
-def AreTransitionWithMoreThanOneState():
-    f=open("automate.txt","r")
+def AreTransitionWithMoreThanOneState(nomfichier):
+    f=open(nomfichier,"r")
     lines=f.readlines()
     f.close()
     for line in lines:
@@ -463,8 +468,9 @@ def dicoToTxt(dico):
 
 
 if __name__ == "__main__":
-    afficherDicoPropre(convertAutomateToDict())
-    print()
-    afficherDicoPropre(Standardisation())
-    print()
-    affichageListe(dicoToTxt(Standardisation()))
+    system("cls")
+    Determinisation("automateTest/6")
+    #print(Determinisation("automate.txt"))
+
+  
+   
