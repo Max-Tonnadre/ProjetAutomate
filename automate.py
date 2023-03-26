@@ -142,7 +142,7 @@ def Standardisation(nomfichier):
                     if ele not in Etat_i["I"][i] :
                         Etat_i["I"][i].append(ele)
     
-    if hasES():
+    if hasES(nomfichier):
         Etat_i["I"].insert(0,3)
     else :
         Etat_i["I"].insert(0,1)
@@ -347,10 +347,10 @@ def CreateNewTransitionForDeter(transition):
 
 
 def CompleteAutomate(nomfichier): 
-    if(isAutomatefull()):
+    if(isAutomatefull(nomfichier)):
         print("L'automate est déjà complet")
         return
-    transitions=WhatAreTransitions()
+    transitions=WhatAreTransitions(nomfichier)
     f=open(nomfichier,"r")
     newline=[]
     lines=f.readlines()
@@ -358,7 +358,7 @@ def CompleteAutomate(nomfichier):
         line=line.replace("-","P")
         newline.append(line)       
     f.close()
-    f=open("automate.txt","w")
+    f=open(nomfichier,"w")
     for e in newline :     
         f.write(e)
     f.write("\n4*P:")
@@ -366,8 +366,8 @@ def CompleteAutomate(nomfichier):
         f.write("("+y+",P)")
     f.close()
 
-def hasES():
-    f=open("automate.txt","r")
+def hasES(nomfichier):
+    f=open(nomfichier,"r")
     lines=f.readlines()
     f.close()
     for line in lines:
