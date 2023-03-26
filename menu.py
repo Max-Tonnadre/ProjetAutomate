@@ -48,11 +48,13 @@ def menuAutomate2():
     print("|                                    |")
     print("|       3. Déterminiser l'automate   |")
     print("|                                    |")
-    print("|       4. Retour                    |")
+    print("|       4. Completer l'automate      |")
+    print("|                                    |")
+    print("|       5. Retour                    |")
     print("|------------------------------------|\n")
 
 def controlAutomate2(nomfichier):
-    n= controlInput(1,4)
+    n= controlInput(1,5)
     if (n==1):
         typeAutomate(nomfichier)
         print("")
@@ -71,7 +73,12 @@ def controlAutomate2(nomfichier):
         print("")
         menuAutomate2()
         controlAutomate2(nomfichier)
-    elif (n == 4):
+    elif (n==4):
+        CompleteAutomate(nomfichier)
+        print("")
+        menuAutomate2()
+        controlAutomate2(nomfichier)
+    elif (n == 5):
         startMenu()
         controlStartMenu()
 
