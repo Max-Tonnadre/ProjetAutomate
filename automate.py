@@ -167,15 +167,16 @@ def getTransitionOfOneState(state):
     lines=f.readlines()
     f.close()
     newlines=[]
-    if ("/"not in state[0]) :
-        for w in state:
-            for line in lines:
-                if line[2] == state[0]:    
-                    newlines=line.split(":")[1].split("(")[1:]
-                    return [e.replace(")","").replace("\n","") for e in newlines]
+    if (("/"not in state[0]) and('/' not in state)) :
+        for line in lines:
+            if line[2] == state[0]:    
+                newlines=line.split(":")[1].split("(")[1:]
+                return [e.replace(")","").replace("\n","") for e in newlines]
     else:
-        print("2/1?",state)
-        states=state[0].split("/")
+        if (type(state)==list):
+            states=state[0].split("/")
+        else:
+            states=state.split("/")
         transition=""
         for state in states:
             print(state)
@@ -213,13 +214,7 @@ def addTwoStateTransition(transitions1,transitions2):
             newTransitions.append(",".join(temp)) #Veut pas join si "-"  dans la liste car devient null
     return newTransitions
             
-
-        
-
-
-
-   
-            
+             
 def Determinisation(nomFichier):
     if(isDeterminist()):
         print("L'automate est déjà déterministe")
@@ -227,10 +222,18 @@ def Determinisation(nomFichier):
     EtatsDone=[]
     EtatsToDo=[]
     newEtat=[] 
+    Etat1=""
+    Entry=WhatAreEntry()
     fichier=open(nomFichier,"r")
     lines=fichier.readlines()
     fichier.close()
-    Etat1=lines[0][0]
+    for entry in Entry:
+        if Etat1=="":
+            Etat1+=entry
+        else:
+            if entry not in Etat1:
+                Etat1+="/"+entry
+    print("Etat1",Etat1)
     transitionEtat1=getTransitionOfOneState(Etat1)
     for i in range(len(transitionEtat1)):
         if(len(transitionEtat1[i])>3 and "/" not in transitionEtat1[i]):
@@ -268,21 +271,26 @@ def Determinisation(nomFichier):
                         else :
                             e=e.replace("-","").replace("/","")
                 print("EtatsToDo2",EtatsToDo)
+    print("newEtat",newEtat)
     convertnewEtatToTxt(newEtat,nomFichier)  
     return
 
 def convertnewEtatToTxt(newEtat,fichiertxt):
     print("NEW ETAT",newEtat)
     fonctions=[]
-    for i in range (len(newEtat)):
+    if ("3" in newEtat[0]):
+        fonctions.append("3")
+    else:
+        fonctions.append("1")
+    for i in range (1,len(newEtat)):
         if(i%2==0):
             fonctions.append(getFonctionOfAState(fichiertxt,newEtat[i]))
     print(fonctions)
     f=open(fichiertxt,"w")
     for i in range(len(newEtat)):
         if(i%2==0):
-            if("/" not in newEtat[i]):
-                print("index",i,fonctions) #fonctions[i] ressort un trois au lieu d'un 2
+            
+                print("index",i,fonctions) 
                 if (i!=0):
                     f.write(fonctions[int(i/2)]+"*")
                 else:
@@ -301,7 +309,7 @@ def getFonctionOfAState(fichier,e):
     f=open(fichier,"r")
     lines=f.readlines()
     f.close()
-    if("/" in e[0]):
+    if("/" in e[0] or "/" in e):
         allfonction=[]
         if(type(e)==list):
             e=e[0].split("/")
@@ -311,15 +319,15 @@ def getFonctionOfAState(fichier,e):
             allfonction.append(getFonctionOfAState(fichier,y))
         print("ALL FONCTION",e,allfonction)
         if ("3" in allfonction) :
-            return "3"
+            return "2"
         if ("2" and "4" in allfonction):
             return "2"
         if ("1" and "4" in allfonction):
-            return "1"
+            return "4"
         if("1" and "2" in allfonction):
-            return "3"
+            return "2"
         if("1" in allfonction):
-            return "1"
+            return "4"
         if("2" in allfonction):
             return "2"
         else :
@@ -431,8 +439,7 @@ def AreTransitionWithMoreThanOneState():
 
 if __name__ == "__main__":
     system("cls")
-    print("Transition de 21",getTransitionOfOneState("2/1"))
-    print("Transition de 3",getTransitionOfOneState("3"))
+    print("Transition de 13",getTransitionOfOneState("1/3"))
     Determinisation("automate.txt")
     #print(Determinisation("automate.txt"))
 
