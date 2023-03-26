@@ -135,7 +135,6 @@ def Standardisation():
     automateDico = convertAutomateToDict()
     listeDesEntrees = WhatAreEntry()
     Etat_i = {"I":[[ele,'-1'] for ele in WhatAreTransitions() ]}
-    afficherDicoPropre(automateDico)
     listeDesValeursDesEtatsEntree = [] #isoler les cles qui nous interesse
     
     for etat in listeDesEntrees:
@@ -262,10 +261,8 @@ def dicoToTxt(dico):
     return ListeLignes
 
 
-      
-    
-
-
 
 if __name__ == "__main__":
-    affichageListe(dicoToTxt(convertAutomateToDict()))
+    afficherDicoPropre(convertAutomateToDict())
+    print()
+    afficherDicoPropre(Standardisation())
