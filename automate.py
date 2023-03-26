@@ -241,10 +241,6 @@ def dicoToTxt(dico):
     transitions = WhatAreTransitions()
     keys = list(dico.keys())
     values = list(dico.values())
-    print(transitions)
-    print(keys)
-    print(values,'\n')
-    afficherDicoPropre(dico)
     ListeLignes = []
     
     for key in keys:
