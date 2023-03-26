@@ -1,4 +1,4 @@
-from boiteOutilsRomain import colortext
+from boiteOutilsRomain import colortext,affichageListe
 from os import system
 
 def convertAutomateToDict():
@@ -135,30 +135,21 @@ def Standardisation():
     automateDico = convertAutomateToDict()
     listeDesEntrees = WhatAreEntry()
     Etat_i = {"I":[[ele,'-1'] for ele in WhatAreTransitions() ]}
-    print(Etat_i)
     afficherDicoPropre(automateDico)
     listeDesValeursDesEtatsEntree = [] #isoler les cles qui nous interesse
     
     for etat in listeDesEntrees:
         listeDesValeursDesEtatsEntree.append(automateDico[etat]) # on recup que les values des E et E/S de dico
-    print('--')
     for listeDesTransition in listeDesValeursDesEtatsEntree: # pour chaque [['a', '-1'], ['b', '-1'], ['c', '-1'], ['d', '-1']] dans la liste
         listeDesTransition = listeDesTransition[1:]
-        print(listeDesTransition)
         for i in range(len(listeDesTransition)):
-            print("listes des transitions ",listeDesTransition[i])
-            print("etat i :",Etat_i["I"])
             if listeDesTransition[i][1:][0] != '-1': # si ça mene nul part pas besoin de copier
-                print("pasVide")
                 if Etat_i["I"][i][1] == '-1':
-                    print("i est vide")
                     Etat_i["I"][i].remove("-1")
             
                 for ele in listeDesTransition[i][1:] :
                     if ele not in Etat_i["I"][i] :
                         Etat_i["I"][i].append(ele)
-                    print("ele =",ele)
-            print("apres if ",Etat_i["I"])
     
     if hasES():
         Etat_i["I"].insert(0,3)
@@ -169,11 +160,8 @@ def Standardisation():
     # 3 -> 2 et 1 -> 4
     for ele in listeDesEntrees :
         automateDico[ele][0] = 2 if automateDico[ele][0]  == 3 else 4
-        #if automateDico[ele][0] == '3':
         automateDico["I"] = Etat_i["I"]
-
-    print("final ",Etat_i)
-    afficherDicoPropre(automateDico)
+    return automateDico 
 
 def hasES():
     f=open("automate.txt","r")
@@ -255,12 +243,21 @@ def dicoToTxt(dico):
     values = list(dico.values())
     print(transitions)
     print(keys)
-    print(values)
-    ligne = ""
-    for i in range(len(values)):
-        ligne += str(values[i][0]) + '*' + keys[i]+':()'+transitions[i]+','
+    print(values,'\n')
+    afficherDicoPropre(dico)
+    ListeLignes = []
+    
+    for key in keys:
+        ligne = ''
+        ligne += str(dico[key][0])+'*'+key+':'
+        cpt = 1 
+        while cpt < len(transitions)+1:
+            ligne +='('+dico[key][cpt][0] +',' + dico[key][cpt][1] + ')'
+            cpt+=1
+        ligne += '\n'
+        ListeLignes.append(ligne)
+    return ListeLignes
 
-    print(keys,'\n',values)
 
       
     
