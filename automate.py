@@ -113,20 +113,20 @@ def isDeterminist(nomfichier):
         return False
     return True
 
-def isStandard():
-    if(HowManyEntry()>1):
+def isStandard(nomfichier):
+    if(HowManyEntry(nomfichier)>1):
         return False
-    if(AreTransitionToEntry()):
+    if(AreTransitionToEntry(nomfichier)):
         return False
     return True
 
-def Standardisation():
-    if(isStandard()):
+def Standardisation(nomfichier):
+    if(isStandard(nomfichier)):
         print("L'automate est déjà standard")
         return 
-    automateDico = convertAutomateToDict()
-    listeDesEntrees = WhatAreEntry()
-    Etat_i = {"I":[[ele,'-1'] for ele in WhatAreTransitions() ]}
+    automateDico = convertAutomateToDict(nomfichier)
+    listeDesEntrees = WhatAreEntry(nomfichier)
+    Etat_i = {"I":[[ele,'-1'] for ele in WhatAreTransitions(nomfichier) ]}
     listeDesValeursDesEtatsEntree = [] #isoler les cles qui nous interesse
     
     for etat in listeDesEntrees:
@@ -469,7 +469,7 @@ def dicoToTxt(dico):
 
 if __name__ == "__main__":
     system("cls")
-    Determinisation("automateTest/6")
+    print(Standardisation("automateTest/6"))
     #print(Determinisation("automate.txt"))
 
   
