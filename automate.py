@@ -110,7 +110,7 @@ def HowManyEntry():
     return compteur
 
 def isDeterminist():
-    if(AreTransitionWithMoreThanOneState()):
+    if(AreTransitionWithMoreThanOneState() or HowManyEntry()>1):
         return False
     return True
 
