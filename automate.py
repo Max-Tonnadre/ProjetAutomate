@@ -1,4 +1,4 @@
-from boiteOutilsRomain import colortext
+from boiteOutilsRomain import colortext,affichageListe
 from os import system
 
 def convertAutomateToDict():
@@ -57,6 +57,7 @@ def AddAutomate():
     f.close()
 
 def displayTableAutomate():
+    system("cls")
     transition=[]
     f=open("automate.txt","r")
     lines=f.readlines()
@@ -64,7 +65,6 @@ def displayTableAutomate():
     for e in checkTransitions:
         if(e!=""):
             transition+=e[0]
-    print(transition)
     print(colortext('E',"blue")+'\t',end='')
     for transi in transition:
         print("|\t"+colortext(transi,"red")+"\t",end="")
@@ -130,30 +130,25 @@ def Standardisation():
     automateDico = convertAutomateToDict()
     listeDesEntrees = WhatAreEntry()
     Etat_i = {"I":[[ele,'-1'] for ele in WhatAreTransitions() ]}
-    #Etat_i["I"].insert(0,1)
-    print(Etat_i)
-    afficherDicoPropre(automateDico)
     listeDesValeursDesEtatsEntree = [] #isoler les cles qui nous interesse
     
     for etat in listeDesEntrees:
         listeDesValeursDesEtatsEntree.append(automateDico[etat]) # on recup que les values des E et E/S de dico
-    print('--')
     for listeDesTransition in listeDesValeursDesEtatsEntree: # pour chaque [['a', '-1'], ['b', '-1'], ['c', '-1'], ['d', '-1']] dans la liste
         listeDesTransition = listeDesTransition[1:]
-        print(listeDesTransition)
         for i in range(len(listeDesTransition)):
-            print("listes des transitions ",listeDesTransition[i])
-            print("etat i :",Etat_i["I"])
             if listeDesTransition[i][1:][0] != '-1': # si ça mene nul part pas besoin de copier
-                print("pasVide")
                 if Etat_i["I"][i][1] == '-1':
-                    print("i est vide")
                     Etat_i["I"][i].remove("-1")
             
                 for ele in listeDesTransition[i][1:] :
                     if ele not in Etat_i["I"][i] :
                         Etat_i["I"][i].append(ele)
-                    print("ele =",ele)
+    
+    if hasES():
+        Etat_i["I"].insert(0,3)
+    else :
+        Etat_i["I"].insert(0,1)
 
                     
                 
@@ -377,7 +372,21 @@ def CompleteAutomate():
     f.close()
 
 
+    #Suppresion des entrées 
+    # 3 -> 2 et 1 -> 4
+    for ele in listeDesEntrees :
+        automateDico[ele][0] = 2 if automateDico[ele][0]  == 3 else 4
+        automateDico["I"] = Etat_i["I"]
+    return automateDico 
 
+def hasES():
+    f=open("automate.txt","r")
+    lines=f.readlines()
+    f.close()
+    for line in lines:
+        if(line[0]=="3"):
+            return True
+    return False
 
 def WhatAreEntry():
     entry=[]
@@ -434,14 +443,43 @@ def AreTransitionWithMoreThanOneState():
                 return True
     return False
 
+def dicoToTxt(dico):
+    """
+    dict = {"A":[1,['a','2'],['b','3','2'],['c','-1']],
+            "B":[4,['a','2'],['b','3','2'],['c','-1']]} 
+    en ça :
+    1*0:(a,2)(b,0)
+    1*1:(a,3)(b,-)
+    2*2:(a,0)(b,1)
+    2*3:(a,-)(b,2)
+
+    """
+    transitions = WhatAreTransitions()
+    keys = list(dico.keys())
+    values = list(dico.values())
+    ListeLignes = []
+    
+    for key in keys:
+        ligne = ''
+        ligne += str(dico[key][0])+'*'+key+':'
+        cpt = 1 
+        while cpt < len(transitions)+1:
+            if len(dico[key][cpt]) == 2:
+                ligne +='('+dico[key][cpt][0] +',' + dico[key][cpt][1] + ')'
+            else :
+                ligne +='('+dico[key][cpt][0] 
+                for i in range(1,len(dico[key][cpt])):
+                    ligne += ','+dico[key][cpt][i]
+                ligne += ')'
+
+            cpt+=1
+        ligne += '\n'
+        ListeLignes.append(ligne)
+    return ListeLignes
 
 
 
 if __name__ == "__main__":
-    system("cls")
-    print("Transition de 13",getTransitionOfOneState("1/3"))
-    Determinisation("automate.txt")
-    #print(Determinisation("automate.txt"))
-
-  
-   
+    afficherDicoPropre(convertAutomateToDict())
+    print()
+    afficherDicoPropre(Standardisation())

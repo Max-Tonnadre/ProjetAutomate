@@ -66,7 +66,7 @@ def algo_tri_basique(liste): # Fait un tour de la liste et choisi le plus petit.
             mini = liste[0]
     return liste_triee
 """=======================================ALGO NB PREMIERS======================================= """
-def nombre_premierQ(nombre):
+def estPremier(nombre):
     compteur = 0
     for i in range(1,nombre+1):
         if nombre % i == 0 :
@@ -80,7 +80,7 @@ def nombre_premierQ(nombre):
 def test_nb_premier(nb):
     listeNombrePremier = []
     for i in range(1,nb):
-        if nombre_premierQ(i) == True :
+        if estPremier(i) == True :
             listeNombrePremier.append(i)
     return listeNombrePremier
 """=======================================Fonction sur liste======================================= """
@@ -117,6 +117,11 @@ def colortext(text,color):
         return("\033[33m"+text+basicolor)
     elif color=="lightred":
         return("\033[31m"+text+basicolor)
+"""======================================= Lignes ======================================= """
 
+def affichageListe(liste):
+    for ele in liste :
+        print(ele)
+    return None
 if __name__ == "__main__":
     print(racine_trinome(1,-5,6))

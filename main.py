@@ -1,3 +1,4 @@
 dico = {"A":[1,['a','2'],['b','3','2'],['c','-1']],
             "B":[4,['a','2'],['b','3','2'],['c','-1']]} 
-print(dico.get('A'))
+for ele in dico :
+    print(dico)
