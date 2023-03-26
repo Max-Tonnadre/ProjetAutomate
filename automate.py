@@ -252,12 +252,13 @@ def dicoToTxt(dico):
         ligne += str(dico[key][0])+'*'+key+':'
         cpt = 1 
         while cpt < len(transitions)+1:
-            if len(dico[key][cpt]) > 2:
+            if len(dico[key][cpt]) == 2:
                 ligne +='('+dico[key][cpt][0] +',' + dico[key][cpt][1] + ')'
             else :
-                ligne +='('+dico[key][cpt][0] +','
+                ligne +='('+dico[key][cpt][0] 
                 for i in range(1,len(dico[key][cpt])):
-                    ligne += dico[key][cpt][i]
+                    ligne += ','+dico[key][cpt][i]
+                ligne += ')'
 
             cpt+=1
         ligne += '\n'
@@ -271,4 +272,4 @@ def dicoToTxt(dico):
 
 
 if __name__ == "__main__":
-    dicoToTxt(convertAutomateToDict())
+    affichageListe(dicoToTxt(convertAutomateToDict()))
