@@ -31,11 +31,11 @@ def controlAutomate():
     global numAutomate
     numAutomate = controlInput(1,44)
     menuAutomate2()
-    controlAutomate2()
     s = str(numAutomate)
-    with open(s + ".txt", "r") as f:
+    with open("automateTest/"+s, "r") as f:
         contenu = f.read()
         print(contenu)
+    controlAutomate2("automateTest/"+s)
 
 
 
@@ -51,34 +51,36 @@ def menuAutomate2():
     print("|       4. Retour                    |")
     print("|------------------------------------|\n")
 
-def controlAutomate2():
+def controlAutomate2(nomfichier):
     n= controlInput(1,4)
     if (n==1):
-        typeAutomate()
+        typeAutomate(nomfichier)
         print("")
         menuAutomate2()
-        controlAutomate2()
+        controlAutomate2(nomfichier)
     elif (n==2):
-        Standardisation()
+        dico=Standardisation(nomfichier)
+        dicoToTxt(dico)
+        #Mettre dans TXT
         print("")
         menuAutomate2()
-        controlAutomate2()
+        controlAutomate2(nomfichier)
     elif (n==3):
-        Determinisation()
+        Determinisation(nomfichier)
         print("")
         menuAutomate2()
-        controlAutomate2()
+        controlAutomate2(nomfichier)
     elif (n == 4):
         startMenu()
         controlStartMenu()
 
 
-def typeAutomate():
-    if isStandard() == True:
+def typeAutomate(nomfichier):
+    if isStandard(nomfichier) == True:
         print("L'automate est standard")
     else:
         print("L'automate n'est pas standard")
-    if isDeterminist()==True:
+    if isDeterminist(nomfichier)==True:
         print("L'automate est déterministe")
     else:
         print("L'automate n'est pas déterministe")

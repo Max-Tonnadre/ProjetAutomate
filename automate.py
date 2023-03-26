@@ -408,7 +408,7 @@ def WhatAreTransitions(nomfichier):
     return transition
 
 def AreTransitionToEntry(nomfichier):
-    entry=WhatAreEntry()
+    entry=WhatAreEntry(nomfichier)
     f=open(nomfichier,"r")
     lines=f.readlines()
     f.close()

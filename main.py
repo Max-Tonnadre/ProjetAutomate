@@ -1,4 +1,4 @@
-dico = {"A":[1,['a','2'],['b','3','2'],['c','-1']],
-            "B":[4,['a','2'],['b','3','2'],['c','-1']]} 
-for ele in dico :
-    print(dico)
+from menu import *
+
+startMenu()
+controlStartMenu()
