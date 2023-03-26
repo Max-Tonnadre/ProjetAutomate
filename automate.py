@@ -146,7 +146,6 @@ def Standardisation(nomfichier):
         Etat_i["I"].insert(0,3)
     else :
         Etat_i["I"].insert(0,1)
-
     for ele in listeDesEntrees :
         automateDico[ele][0] = 2 if automateDico[ele][0]  == 3 else 4
         automateDico["I"] = Etat_i["I"]
@@ -431,7 +430,13 @@ def AreTransitionWithMoreThanOneState(nomfichier):
                 return True
     return False
 
-def dicoToTxt(dico):
+def fct(liste,fichier):
+    f = open(fichier,'w')
+    for ligne in liste:
+        f.write(ligne)
+    f.close()
+
+def dicoToTxt(dico,nomfichier):
     """
     dict = {"A":[1,['a','2'],['b','3','2'],['c','-1']],
             "B":[4,['a','2'],['b','3','2'],['c','-1']]} 
@@ -442,7 +447,7 @@ def dicoToTxt(dico):
     2*3:(a,-)(b,2)
 
     """
-    transitions = WhatAreTransitions()
+    transitions = WhatAreTransitions(nomfichier)
     keys = list(dico.keys())
     values = list(dico.values())
     ListeLignes = []

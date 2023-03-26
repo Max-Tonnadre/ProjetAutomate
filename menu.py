@@ -60,8 +60,8 @@ def controlAutomate2(nomfichier):
         controlAutomate2(nomfichier)
     elif (n==2):
         dico=Standardisation(nomfichier)
-        dicoToTxt(dico)
-        #Mettre dans TXT
+        lignes=dicoToTxt(dico,nomfichier)
+        fct(lignes,nomfichier)
         print("")
         menuAutomate2()
         controlAutomate2(nomfichier)
