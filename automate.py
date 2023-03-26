@@ -121,8 +121,6 @@ def isStandard():
         return False
     return True
 
-
-
 def Standardisation():
     if(isStandard()):
         print("L'automate est déjà standard")
@@ -150,13 +148,11 @@ def Standardisation():
     else :
         Etat_i["I"].insert(0,1)
 
-                    
-                
+    for ele in listeDesEntrees :
+        automateDico[ele][0] = 2 if automateDico[ele][0]  == 3 else 4
+        automateDico["I"] = Etat_i["I"]
+    return automateDico              
 
-
-            print("apres if ",Etat_i["I"])
-    print("final ",Etat_i)
-            
 def getTransitionOfOneState(state):
     f=open("automate.txt","r")
     lines=f.readlines()
@@ -208,8 +204,7 @@ def addTwoStateTransition(transitions1,transitions2):
                         temp.remove(e)
             newTransitions.append(",".join(temp)) #Veut pas join si "-"  dans la liste car devient null
     return newTransitions
-            
-             
+                        
 def Determinisation(nomFichier):
     if(isDeterminist()):
         print("L'automate est déjà déterministe")
@@ -336,7 +331,6 @@ def getFonctionOfAState(fichier,e):
             if line[2]==e:
                 return str(line[0])
 
-
 def CreateNewTransitionForDeter(transition):
     newTransition=""
     elements=transition.split(",")
@@ -347,9 +341,6 @@ def CreateNewTransitionForDeter(transition):
         else :
             newTransition+="/"+e
     return newTransition
-
-    
-
 
 def CompleteAutomate(): 
     if(isAutomatefull()):
@@ -370,14 +361,6 @@ def CompleteAutomate():
     for y in transitions:
         f.write("("+y+",P)")
     f.close()
-
-
-    #Suppresion des entrées 
-    # 3 -> 2 et 1 -> 4
-    for ele in listeDesEntrees :
-        automateDico[ele][0] = 2 if automateDico[ele][0]  == 3 else 4
-        automateDico["I"] = Etat_i["I"]
-    return automateDico 
 
 def hasES():
     f=open("automate.txt","r")
@@ -483,3 +466,5 @@ if __name__ == "__main__":
     afficherDicoPropre(convertAutomateToDict())
     print()
     afficherDicoPropre(Standardisation())
+    print()
+    affichageListe(dicoToTxt(Standardisation()))
