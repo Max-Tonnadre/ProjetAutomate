@@ -269,7 +269,7 @@ def Determinisation(nomfichier):
 def convertnewEtatToTxt(newEtat,fichiertxt):
     print("NEW ETAT",newEtat)
     fonctions=[]
-    if ("3" in newEtat[0]):
+    if ("3" or "2" in newEtat[0]):
         fonctions.append("3")
     else:
         fonctions.append("1")
