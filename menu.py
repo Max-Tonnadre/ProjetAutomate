@@ -44,23 +44,30 @@ def menuAutomate2():
     print("|                                    |")
     print("|       1. Voir son type             |")
     print("|                                    |")
-    print("|       2. Standardiser l'automate   |")
+    print("|       2. Voir sa table             |")
     print("|                                    |")
-    print("|       3. Déterminiser l'automate   |")
+    print("|       3. Standardiser l'automate   |")
     print("|                                    |")
-    print("|       4. Completer l'automate      |")
+    print("|       4. Déterminiser l'automate   |")
     print("|                                    |")
-    print("|       5. Retour                    |")
+    print("|       5. Completer l'automate      |")
+    print("|                                    |")
+    print("|       6. Retour                    |")
     print("|------------------------------------|\n")
 
 def controlAutomate2(nomfichier):
-    n= controlInput(1,5)
+    n= controlInput(1,6)
     if (n==1):
         typeAutomate(nomfichier)
         print("")
         menuAutomate2()
         controlAutomate2(nomfichier)
     elif (n==2):
+        displayTableAutomate(nomfichier)
+        print("")
+        menuAutomate2()
+        controlAutomate2(nomfichier)
+    elif (n==3):
         dico=Standardisation(nomfichier)
         if (dico!=None):
             lignes=dicoToTxt(dico,nomfichier)
@@ -68,17 +75,17 @@ def controlAutomate2(nomfichier):
             print("")
             menuAutomate2()
             controlAutomate2(nomfichier)
-    elif (n==3):
+    elif (n==4):
         Determinisation(nomfichier)
         print("")
         menuAutomate2()
         controlAutomate2(nomfichier)
-    elif (n==4):
+    elif (n==5):
         CompleteAutomate(nomfichier)
         print("")
         menuAutomate2()
         controlAutomate2(nomfichier)
-    elif (n == 5):
+    elif (n == 6):
         startMenu()
         controlStartMenu()
 
